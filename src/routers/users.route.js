@@ -58,16 +58,16 @@ router.post('/login', (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
-
-});
 
 router.get('/list', (req, res) => {
-  CheckAuthToken(req, res);
-  UsersModel.findAll().then(users => {
-    ExitWithData(res, users.map(user => ({...user.dataValues, password: undefined})));
+  CheckAuthToken(req, res).then(() => {
+    UsersModel.findAll().then(users => {
+      ExitWithData(res, users.map(user => ({...user.dataValues, password: undefined})));
+    }).catch((err) => {
+      ExitWithStatus(res, HTTPStatus.InternalServerError, err);
+    });
   }).catch((err) => {
-    ExitWithStatus(res, HTTPStatus.InternalServerError, err);
+    ExitWithStatus(res, err);
   });
 });
 

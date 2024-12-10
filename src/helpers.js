@@ -38,15 +38,17 @@ exports.EncodeToken = (token) => {
 }
 
 exports.CheckAuthToken = (req, res) => {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res.status(HTTPStatus.Unauthorized.code).json(HTTPStatus.Unauthorized).end();
-  }
-  jwt.verify(token, tokenKey, (err, decoded) => {
-    if (err) {
-      return res.status(HTTPStatus.Forbidden.code).json(err.name === 'TokenExpiredError'
-        ? ErrorTypes.TokenExpiredError : ErrorTypes.BadToken).end();
+  return new Promise((resolve, reject) => {
+    const token = req.headers.authorization.split(' ')[1];
+    if (!token) {
+      reject(HTTPStatus.Unauthorized);
     }
-    return true;
+    jwt.verify(token, tokenKey, (err, decoded) => {
+      if (err) {
+        reject(err.name === 'TokenExpiredError'
+          ? ErrorTypes.TokenExpiredError : ErrorTypes.BadToken);
+      }
+      resolve(decoded);
+    })
   })
 }
