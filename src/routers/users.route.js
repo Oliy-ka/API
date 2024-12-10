@@ -45,8 +45,8 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/list', (req, res) => {
+  CheckAuthToken(req, res);
   UsersModel.findAll().then(users => {
-    CheckAuthToken(req, res);
     ExitWithData(res, users.map(user => ({...user.dataValues, password: undefined})));
   }).catch((err) => {
     ExitWithStatus(res, HTTPStatus.InternalServerError, err);
