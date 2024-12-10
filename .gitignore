@@ -1,0 +1,6 @@
+/node_modules
+
+.idea
+database.sqlite
+
+.DS_Store
