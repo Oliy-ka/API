@@ -1,5 +1,6 @@
 exports.PORT = 3000;
 exports.tokenKey = 'hhj$wxJkl234T71Qassde&@mm.eed@ddf71';
+exports.tokenExpiresIn = "1440m";
 
 
 exports.HTTPStatus = {
